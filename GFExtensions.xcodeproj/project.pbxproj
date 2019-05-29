@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C149754213F70E800197EA0 /* GlobalConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C149753213F70E800197EA0 /* GlobalConst.swift */; };
+		1CAC55072113F4C000D2D29F /* Extension+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC55062113F4C000D2D29F /* Extension+UIKit.swift */; };
+		1CAC55092113F4DA00D2D29F /* Extension+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC55082113F4DA00D2D29F /* Extension+Foundation.swift */; };
 		1CBB462C2113150A0054F0E0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CBB462B2113150A0054F0E0 /* AppDelegate.swift */; };
 		1CBB462E2113150A0054F0E0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CBB462D2113150A0054F0E0 /* ViewController.swift */; };
 		1CBB46312113150A0054F0E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1CBB462F2113150A0054F0E0 /* Main.storyboard */; };
@@ -34,6 +37,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1C149753213F70E800197EA0 /* GlobalConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConst.swift; sourceTree = "<group>"; };
+		1CAC55062113F4C000D2D29F /* Extension+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIKit.swift"; sourceTree = "<group>"; };
+		1CAC55082113F4DA00D2D29F /* Extension+Foundation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Foundation.swift"; sourceTree = "<group>"; };
 		1CBB46282113150A0054F0E0 /* GFExtensions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GFExtensions.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CBB462B2113150A0054F0E0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1CBB462D2113150A0054F0E0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +103,7 @@
 		1CBB462A2113150A0054F0E0 /* GFExtensions */ = {
 			isa = PBXGroup;
 			children = (
+				1CBB46592113152C0054F0E0 /* New Group */,
 				1CBB462B2113150A0054F0E0 /* AppDelegate.swift */,
 				1CBB462D2113150A0054F0E0 /* ViewController.swift */,
 				1CBB462F2113150A0054F0E0 /* Main.storyboard */,
@@ -123,6 +130,16 @@
 				1CBB464D2113150C0054F0E0 /* Info.plist */,
 			);
 			path = GFExtensionsUITests;
+			sourceTree = "<group>";
+		};
+		1CBB46592113152C0054F0E0 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				1CAC55062113F4C000D2D29F /* Extension+UIKit.swift */,
+				1CAC55082113F4DA00D2D29F /* Extension+Foundation.swift */,
+				1C149753213F70E800197EA0 /* GlobalConst.swift */,
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,6 +273,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C149754213F70E800197EA0 /* GlobalConst.swift in Sources */,
+				1CAC55092113F4DA00D2D29F /* Extension+Foundation.swift in Sources */,
+				1CAC55072113F4C000D2D29F /* Extension+UIKit.swift in Sources */,
 				1CBB462E2113150A0054F0E0 /* ViewController.swift in Sources */,
 				1CBB462C2113150A0054F0E0 /* AppDelegate.swift in Sources */,
 			);
@@ -369,6 +389,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -422,6 +443,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -431,7 +453,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X54SEC6EF3;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = GFExtensions/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -439,7 +461,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fangshen.GFExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -449,7 +471,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X54SEC6EF3;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = GFExtensions/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -457,7 +479,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fangshen.GFExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
