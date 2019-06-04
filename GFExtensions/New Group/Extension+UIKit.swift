@@ -8,21 +8,10 @@
 
 import Foundation
 import UIKit
-import Photos
-import CoreServices
 
-extension PHAsset {
-    var gf_isGif: Bool {
-        let resource = PHAssetResource.assetResources(for: self).first!
-        // 通过统一类型标识符(uniform type identifier) UTI 来判断
-        let uti = resource.uniformTypeIdentifier as CFString
-        return UTTypeConformsTo(uti, kUTTypeGIF)
-    }
-}
-
-extension UIViewController {
-    func gf_setStatusBarColor(color : UIColor) {
-        if UIScreen.gf_isFullScreen {
+extension GFCompat where Base: UIViewController {
+    func setStatusBarColor(color : UIColor) {
+        if UIScreen.gf.isFullScreen {
             if let statusWin = UIApplication.shared.value(forKey: "statusBarWindow") as? UIView {
                 if let statusBar = statusWin.value(forKey: "statusBar") as? UIView {
                     statusBar.backgroundColor = color;
@@ -31,20 +20,20 @@ extension UIViewController {
         }
     }
     
-    @objc func gf_popAction() {
-        self.navigationController?.popViewController(animated: true)
+    func popAction() {
+        base.navigationController?.popViewController(animated: true)
     }
-    @objc func gf_dismissAction() {
-        self.dismiss(animated: true, completion: nil)
+    func dismissAction() {
+        base.dismiss(animated: true, completion: nil)
     }
 }
 
-extension UINavigationController{
+extension GFCompat where Base: UINavigationController{
     
-    func gf_backgroundAlpha(alpha:CGFloat){
-        if let barBackgroundView = navigationBar.subviews.first{
+    func backgroundAlpha(alpha:CGFloat){
+        if let barBackgroundView = base.navigationBar.subviews.first{
             if #available(iOS 11.0, *){
-                if navigationBar.isTranslucent{
+                if base.navigationBar.isTranslucent{
                     for view in barBackgroundView.subviews {
                         view.alpha = alpha
                     }
@@ -58,9 +47,9 @@ extension UINavigationController{
     }
 }
 
-extension UIScreen {
+extension GFCompat where Base: UIScreen {
     //Size
-    static var gf_isFullScreen: Bool {
+    static var isFullScreen: Bool {
         if #available(iOS 11, *) {
             guard let w = UIApplication.shared.delegate?.window, let unwrapedWindow = w else {
                 return false
@@ -74,151 +63,151 @@ extension UIScreen {
         return false
     }
     
-    static var gf_screenWidth: CGFloat {
+    static var screenWidth: CGFloat {
         return UIScreen.main.bounds.size.width
     }
     
-    static var gf_screenHeight: CGFloat {
+    static var screenHeight: CGFloat {
         return UIScreen.main.bounds.size.height
     }
     
-    static var gf_navigationBarHeight: CGFloat {
-        return gf_statusBarHeight + UINavigationBar.appearance().gf_height
+    static var navigationBarHeight: CGFloat {
+        return statusBarHeight + UINavigationBar.appearance().gf.height
     }
     
-    static var gf_statusBarHeight: CGFloat {
+    static var statusBarHeight: CGFloat {
         return UIApplication.shared.statusBarFrame.size.height
     }
     
-    static var gf_bottomSafeHeight: CGFloat {
-        return gf_isFullScreen ? (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0) : 0
+    static var bottomSafeHeight: CGFloat {
+        return isFullScreen ? (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0) : 0
     }
     
     static var gf_bottomBarHeight: CGFloat {
-        return gf_isFullScreen ? 83 : 49
+        return isFullScreen ? 83 : 49
     }
 }
 
-extension UIView {
+extension GFCompat where Base: UIView {
     
-    var gf_x: CGFloat {
+    var x: CGFloat {
         set{
-            self.frame.origin.x = newValue
+            self.base.frame.origin.x = newValue
         }
         get{
-            return self.frame.origin.x
+            return self.base.frame.origin.x
         }
     }
     
-    var gf_y: CGFloat {
+    var y: CGFloat {
         set{
-            self.frame.origin.y = newValue
+            self.base.frame.origin.y = newValue
         }
         get{
-            return self.frame.origin.y
+            return self.base.frame.origin.y
         }
     }
     
-    var gf_width: CGFloat {
+    var width: CGFloat {
         set{
-            self.frame.size.width = newValue
+            self.base.frame.size.width = newValue
         }
         get{
-            return self.frame.size.width
+            return self.base.frame.size.width
         }
     }
     
-    var gf_height: CGFloat {
+    var height: CGFloat {
         set{
-            self.frame.size.height = newValue
+            self.base.frame.size.height = newValue
         }
         get{
-            return self.frame.size.height
+            return self.base.frame.size.height
         }
     }
     
-    var gf_center: CGPoint {
+    var center: CGPoint {
         set{
-            self.center = newValue
+            self.base.center = newValue
         }
         get{
-            return self.center
+            return self.base.center
         }
     }
     
-    var gf_centerX: CGFloat {
+    var centerX: CGFloat {
         set{
-            self.center.x = newValue
+            self.base.center.x = newValue
         }
         get{
-            return self.center.x
+            return self.base.center.x
         }
     }
     
-    var gf_centerY: CGFloat {
+    var centerY: CGFloat {
         set{
-            self.center.y = newValue
+            self.base.center.y = newValue
         }
         get{
-            return self.center.y
-        }
-    }
-    
-    var gf_top: CGFloat{
-        get{
-            return self.frame.minY
+            return self.base.center.y
         }
     }
     
-    var gf_bottom: CGFloat {
+    var top: CGFloat{
         get{
-            return self.frame.maxY
+            return self.base.frame.minY
         }
     }
     
-    var gf_left: CGFloat {
+    var bottom: CGFloat {
         get{
-            return self.frame.minX
+            return self.base.frame.maxY
         }
     }
     
-    var gf_right: CGFloat {
+    var left: CGFloat {
         get{
-            return self.frame.maxX
+            return self.base.frame.minX
+        }
+    }
+    
+    var right: CGFloat {
+        get{
+            return self.base.frame.maxX
         }
     }
     
     //MARK: View 画圆角
-    func gf_roundCorners(radius: CGFloat, _ corners: UIRectCorner = UIRectCorner.allCorners ) {
-        let rect = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.bounds.height);
+    func roundCorners(radius: CGFloat, _ corners: UIRectCorner = UIRectCorner.allCorners ) {
+        let rect = CGRect(x: 0, y: 0, width: self.base.bounds.width, height: self.base.bounds.height);
         let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
         
         if radius == 0 {
-            self.layer.mask = nil;
+            self.base.layer.mask = nil;
         }else{
             let mask = CAShapeLayer();
             mask.path = path.cgPath;
             mask.frame = rect;
-            self.layer.mask = mask
+            self.base.layer.mask = mask
         }
     }
     
     //MARK: 过渡色
     @discardableResult func addGradient(colors: [UIColor], startPoint: CGPoint = CGPoint(x: 0.5, y: 0), endPoint: CGPoint = CGPoint(x: 0.5, y: 1)) -> CAGradientLayer{
         let gradient = CAGradientLayer()
-        gradient.frame = bounds
+        gradient.frame = base.bounds
         gradient.colors = colors.map({$0.cgColor})
         gradient.startPoint = startPoint
         gradient.endPoint = endPoint
-        layer.insertSublayer(gradient, at: 0)
+        base.layer.insertSublayer(gradient, at: 0)
         return gradient
     }
     
     //MARK: 获取View的第一响应者
-    var gf_firstResponder: UIView? {
-        guard !isFirstResponder else { return self }
-        for subview in subviews {
-            if let firstResponder = subview.gf_firstResponder {
+    var firstResponder: UIView? {
+        guard !base.isFirstResponder else { return self.base }
+        for subview in base.subviews {
+            if let firstResponder = subview.gf.firstResponder {
                 return firstResponder
             }
         }
@@ -226,19 +215,19 @@ extension UIView {
     }
     
     //MARK: - 截屏
-    func gf_screenShot() -> UIImage? {
+    func screenShot() -> UIImage? {
         var image: UIImage?
         
         if #available(iOS 10.0, *) {
             let format = UIGraphicsImageRendererFormat()
-            format.opaque = isOpaque
-            let renderer = UIGraphicsImageRenderer(size: frame.size, format: format)
+            format.opaque = base.isOpaque
+            let renderer = UIGraphicsImageRenderer(size: base.frame.size, format: format)
             image = renderer.image { context in
-                drawHierarchy(in: frame, afterScreenUpdates: true)
+                base.drawHierarchy(in: base.frame, afterScreenUpdates: true)
             }
         } else {
-            UIGraphicsBeginImageContextWithOptions(frame.size, isOpaque, UIScreen.main.scale)
-            drawHierarchy(in: frame, afterScreenUpdates: true)
+            UIGraphicsBeginImageContextWithOptions(base.frame.size, base.isOpaque, UIScreen.main.scale)
+            base.drawHierarchy(in: base.frame, afterScreenUpdates: true)
             image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
         }
@@ -246,8 +235,8 @@ extension UIView {
     }
     
     //MARK: 获取当前控制器
-    func gf_ownerController() -> UIViewController? {
-        var n = self.next
+    func ownerController() -> UIViewController? {
+        var n = base.next
         while n != nil {
             if (n is UIViewController) {
                 return n as? UIViewController
@@ -258,57 +247,57 @@ extension UIView {
     }
     
     //MARK: 阴影
-    func gf_addShadow(color: UIColor = UIColor.black.withAlphaComponent(0.05), offset: CGSize = .zero, opacity: Float = 1, shadowRadius: CGFloat = 11) {
-        self.layer.shadowColor = color.cgColor
-        self.layer.shadowOffset = offset
-        self.layer.shadowOpacity = opacity
-        self.layer.shadowRadius = shadowRadius
+    func addShadow(color: UIColor = UIColor.black.withAlphaComponent(0.05), offset: CGSize = .zero, opacity: Float = 1, shadowRadius: CGFloat = 11) {
+        base.layer.shadowColor = color.cgColor
+        base.layer.shadowOffset = offset
+        base.layer.shadowOpacity = opacity
+        base.layer.shadowRadius = shadowRadius
     }
     
-    func gf_removeShadow() {
-        self.layer.shadowColor = nil
-        self.layer.shadowOffset = .zero
-        self.layer.shadowOpacity = 0
-        self.layer.shadowRadius = 0
+    func removeShadow() {
+        base.layer.shadowColor = nil
+        base.layer.shadowOffset = .zero
+        base.layer.shadowOpacity = 0
+        base.layer.shadowRadius = 0
     }
     
     // MARK:  UIViewAnimation
-    class  func gf_transformRotate(view: UIView, duration: TimeInterval, rotationAngle angle: CGFloat){
+    static  func transformRotate(view: UIView, duration: TimeInterval, rotationAngle angle: CGFloat){
         UIView.animate(withDuration: duration) {
             view.transform = CGAffineTransform.init(rotationAngle: angle)
         }
     }
     
-    class func gf_transformTranslate(view: UIView, duration: TimeInterval, translationX tx: CGFloat, y ty: CGFloat){
+    static func transformTranslate(view: UIView, duration: TimeInterval, translationX tx: CGFloat, y ty: CGFloat){
         UIView.animate(withDuration: duration) {
             view.transform = CGAffineTransform.init(translationX: tx, y: ty)
         }
     }
     
-    class func gf_transformScale(view: UIView, duration: TimeInterval, scaleX sx: CGFloat, y sy: CGFloat){
+    static func transformScale(view: UIView, duration: TimeInterval, scaleX sx: CGFloat, y sy: CGFloat){
         UIView.animate(withDuration: duration) {
             view.transform = CGAffineTransform.init(scaleX: sx, y: sy)
         }
     }
 }
 
-extension UILabel {
-    func gf_setTextColor(textColor: UIColor, font: UIFont, _ alignment: NSTextAlignment = .center) {
-        self.textColor = textColor
-        self.font = font
-        self.textAlignment = alignment
+extension GFCompat where Base: UILabel {
+    func setTextColor(textColor: UIColor, font: UIFont, _ alignment: NSTextAlignment = .center) {
+        base.textColor = textColor
+        base.font = font
+        base.textAlignment = alignment
     }
-    func gf_setText(text: String, textColor: UIColor, font: UIFont, _ alignment: NSTextAlignment = .center) {
-        self.text = text
-        self.textColor = textColor
-        self.font = font
-        self.textAlignment = alignment
+    func setText(text: String, textColor: UIColor, font: UIFont, _ alignment: NSTextAlignment = .center) {
+        base.text = text
+        base.textColor = textColor
+        base.font = font
+        base.textAlignment = alignment
     }
 }
 
-extension UIButton {
+extension GFCompat where Base: UIButton {
     
-    func gf_setBackgroundColor(color: UIColor, forState: UIControl.State) {
+    func setBackgroundColor(color: UIColor, forState: UIControl.State) {
         
         UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
         if let c = UIGraphicsGetCurrentContext() {
@@ -318,7 +307,7 @@ extension UIButton {
         let colorImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        self.setBackgroundImage(colorImage, for: forState)
+        base.setBackgroundImage(colorImage, for: forState)
     }
 }
 
@@ -337,46 +326,7 @@ extension UIImage {
         self.init(cgImage: cgImage)
     }
     
-    public func gf_roundCorners(_ cornerRadius: CGFloat) -> UIImage? {
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        let rect = CGRect(origin: CGPoint.zero, size: size)
-        let context = UIGraphicsGetCurrentContext()
-        let path = UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius)
-        
-        context?.beginPath()
-        context?.addPath(path.cgPath)
-        context?.closePath()
-        context?.clip()
-        
-        draw(at: CGPoint.zero)
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext();
-        
-        return image;
-    }
-    
-    func transform(withNewColor color: UIColor) -> UIImage {
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        
-        let context = UIGraphicsGetCurrentContext()!
-        context.translateBy(x: 0, y: size.height)
-        context.scaleBy(x: 1.0, y: -1.0)
-        context.setBlendMode(.normal)
-        
-        let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        context.clip(to: rect, mask: cgImage!)
-        
-        color.setFill()
-        context.fill(rect)
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        return newImage
-    }
-    
     convenience init(view: UIView, scale : CGFloat) {
-        
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.isOpaque, scale)
         view.drawHierarchy(in: view.bounds, afterScreenUpdates: false)
         defer {UIGraphicsEndImageContext()};
@@ -385,14 +335,16 @@ extension UIImage {
         self.init(cgImage: (image?.cgImage)!)
         
     }
-    
+}
+
+extension GFCompat where Base: UIImage {
     /// Add WaterMarkingImage
     ///
     /// - Parameters:
     ///   - image: the image that painted on
     ///   - waterImageName: waterImage
     /// - Returns: the warterMarked image
-    static func gf_waterMarkingImage(image : UIImage, with waterImage: UIImage) -> UIImage?{
+    static func waterMarkingImage(image : UIImage, with waterImage: UIImage) -> UIImage?{
         
         UIGraphicsBeginImageContextWithOptions(image.size, false, 0)
         image.draw(in: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
@@ -414,7 +366,7 @@ extension UIImage {
     ///   - image: the image that painted on
     ///   - text: the text that needs painted
     /// - Returns: the waterMarked image
-    static func gf_waterMarkingImage(image : UIImage, with text: String) -> UIImage?{
+    static func waterMarkingImage(image : UIImage, with text: String) -> UIImage?{
         
         UIGraphicsBeginImageContextWithOptions(image.size, false, 0)
         image.draw(in: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
@@ -431,12 +383,96 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return waterMarkingImage
     }
+    
+    func transform(withNewColor color: UIColor) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(base.size, false, base.scale)
+        
+        let context = UIGraphicsGetCurrentContext()!
+        context.translateBy(x: 0, y: base.size.height)
+        context.scaleBy(x: 1.0, y: -1.0)
+        context.setBlendMode(.normal)
+        
+        let rect = CGRect(x: 0, y: 0, width: base.size.width, height: base.size.height)
+        context.clip(to: rect, mask: base.cgImage!)
+        
+        color.setFill()
+        context.fill(rect)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+    
+    public func roundCorners(_ cornerRadius: CGFloat) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(base.size, false, base.scale)
+        let rect = CGRect(origin: CGPoint.zero, size: base.size)
+        let context = UIGraphicsGetCurrentContext()
+        let path = UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius)
+        
+        context?.beginPath()
+        context?.addPath(path.cgPath)
+        context?.closePath()
+        context?.clip()
+        
+        base.draw(at: CGPoint.zero)
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        
+        return image;
+    }
+    func crop(ratio: CGFloat) -> UIImage { //将图片裁剪成指定比例（多余部分自动删除）
+        //计算最终尺寸
+        var newSize:CGSize!
+        if base.size.width/base.size.height > ratio {
+            newSize = CGSize(width: base.size.height * ratio, height: base.size.height)
+        }else{
+            newSize = CGSize(width: base.size.width, height: base.size.width / ratio)
+        }
+        
+        ////图片绘制区域
+        var rect = CGRect.zero
+        rect.size.width  = base.size.width
+        rect.size.height = base.size.height
+        rect.origin.x    = (newSize.width - base.size.width ) / 2.0
+        rect.origin.y    = (newSize.height - base.size.height ) / 2.0
+        
+        //绘制并获取最终图片
+        UIGraphicsBeginImageContext(newSize)
+        base.draw(in: rect)
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return scaledImage!
+    }
+    
+    func scale(to newSize: CGSize) -> UIImage {//将图片缩放成指定尺寸（多余部分自动删除）
+        //计算比例
+        let aspectWidth  = newSize.width/base.size.width
+        let aspectHeight = newSize.height/base.size.height
+        let aspectRatio = max(aspectWidth, aspectHeight)
+        
+        //图片绘制区域
+        var scaledImageRect = CGRect.zero
+        scaledImageRect.size.width  = base.size.width * aspectRatio
+        scaledImageRect.size.height = base.size.height * aspectRatio
+        scaledImageRect.origin.x    = (newSize.width - base.size.width * aspectRatio) / 2.0
+        scaledImageRect.origin.y    = (newSize.height - base.size.height * aspectRatio) / 2.0
+        
+        //绘制并获取最终图片
+        UIGraphicsBeginImageContext(newSize)
+        base.draw(in: scaledImageRect)
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return scaledImage!
+    }
 }
 
 extension UIColor {
     
-    convenience init(gf_hex: String) {
-        var cString:String = gf_hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+    convenience init(hex: String) {
+        var cString:String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
         
         if (cString.hasPrefix("#")) {
             cString.remove(at: cString.startIndex)
@@ -460,8 +496,10 @@ extension UIColor {
             alpha: CGFloat(1.0)
         )
     }
-    
-    static func gf_randomColor() -> UIColor {
+}
+
+extension GFCompat where Base: UIColor {
+    static func randomColor() -> UIColor {
         return UIColor(red: CGFloat.random(in: 0 ... 255)/255.0, green: CGFloat.random(in: 0 ... 255)/255.0, blue: CGFloat.random(in: 0 ... 255)/255.0, alpha: 1.0)
     }
 }
@@ -469,12 +507,12 @@ extension UIColor {
 extension CGFloat {
     ///视图中所有水平值都是宽度为375时设定的逻辑值，这里返回实际的水平方向上的值
     var real: CGFloat {
-        return (self * UIScreen.gf_screenWidth) / 375.0
+        return (self * UIScreen.gf.screenWidth) / 375.0
     }
     ///返回该数值在刘海影响下的数值
     var realTopOffset: CGFloat {
         if #available(iOS 11.0, *), let top = UIApplication.shared.keyWindow?.safeAreaInsets.top, top != 0 {
-            return (self + top - UIScreen.gf_statusBarHeight).real
+            return (self + top - UIScreen.gf.statusBarHeight).real
         } else {
             // Fallback on earlier versions
             return self.real
@@ -482,125 +520,75 @@ extension CGFloat {
     }
 }
 
-extension UIImage {
+extension GFCompat where Base: UIScrollView {
     
-    func gf_crop(ratio: CGFloat) -> UIImage { //将图片裁剪成指定比例（多余部分自动删除）
-        //计算最终尺寸
-        var newSize:CGSize!
-        if size.width/size.height > ratio {
-            newSize = CGSize(width: size.height * ratio, height: size.height)
-        }else{
-            newSize = CGSize(width: size.width, height: size.width / ratio)
-        }
-        
-        ////图片绘制区域
-        var rect = CGRect.zero
-        rect.size.width  = size.width
-        rect.size.height = size.height
-        rect.origin.x    = (newSize.width - size.width ) / 2.0
-        rect.origin.y    = (newSize.height - size.height ) / 2.0
-        
-        //绘制并获取最终图片
-        UIGraphicsBeginImageContext(newSize)
-        draw(in: rect)
-        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return scaledImage!
+    func scrollToTop() {
+        base.gf.scrollToTopAnimated(true)
     }
     
-    func gf_scale(to newSize: CGSize) -> UIImage {//将图片缩放成指定尺寸（多余部分自动删除）
-        //计算比例
-        let aspectWidth  = newSize.width/size.width
-        let aspectHeight = newSize.height/size.height
-        let aspectRatio = max(aspectWidth, aspectHeight)
-        
-        //图片绘制区域
-        var scaledImageRect = CGRect.zero
-        scaledImageRect.size.width  = size.width * aspectRatio
-        scaledImageRect.size.height = size.height * aspectRatio
-        scaledImageRect.origin.x    = (newSize.width - size.width * aspectRatio) / 2.0
-        scaledImageRect.origin.y    = (newSize.height - size.height * aspectRatio) / 2.0
-        
-        //绘制并获取最终图片
-        UIGraphicsBeginImageContext(newSize)
-        draw(in: scaledImageRect)
-        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return scaledImage!
+    func scrollToBottom() {
+        base.gf.scrollToBottomAnimated(true)
+    }
+    
+    func scrollToLeft() {
+        base.gf.scrollToLeftAnimated(true)
+    }
+    
+    func scrollToRight() {
+        base.gf.scrollToRightAnimated(true)
+    }
+    
+    func scrollToTopAnimated(_ animated: Bool) {
+        var off = base.contentOffset
+        off.y = 0 - base.contentInset.top
+        base.setContentOffset(off, animated: animated)
+    }
+    
+    func scrollToBottomAnimated(_ animated: Bool) {
+        var off = base.contentOffset
+        off.y = base.contentSize.height - base.bounds.size.height + base.contentInset.bottom
+        base.setContentOffset(off, animated: animated)
+    }
+    
+    func scrollToLeftAnimated(_ animated: Bool) {
+        var off = base.contentOffset
+        off.x = 0 - base.contentInset.left
+        base.setContentOffset(off, animated: animated)
+    }
+    
+    func scrollToRightAnimated(_ animated: Bool) {
+        var off = base.contentOffset
+        off.x = base.contentSize.width - base.bounds.size.width + base.contentInset.right
+        base.setContentOffset(off, animated: animated)
     }
 }
 
-extension UIScrollView {
+extension GFCompat where Base: UITableView {
     
-    func gf_scrollToTop() {
-        self.gf_scrollToTopAnimated(true)
-    }
-    
-    func gf_scrollToBottom() {
-        self.gf_scrollToBottomAnimated(true)
-    }
-    
-    func gf_scrollToLeft() {
-        self.gf_scrollToLeftAnimated(true)
-    }
-    
-    func gf_scrollToRight() {
-        self.gf_scrollToRightAnimated(true)
-    }
-    
-    func gf_scrollToTopAnimated(_ animated: Bool) {
-        var off = self.contentOffset
-        off.y = 0 - self.contentInset.top
-        self.setContentOffset(off, animated: animated)
-    }
-    
-    func gf_scrollToBottomAnimated(_ animated: Bool) {
-        var off = self.contentOffset
-        off.y = self.contentSize.height - self.bounds.size.height + self.contentInset.bottom
-        self.setContentOffset(off, animated: animated)
-    }
-    
-    func gf_scrollToLeftAnimated(_ animated: Bool) {
-        var off = self.contentOffset
-        off.x = 0 - self.contentInset.left
-        self.setContentOffset(off, animated: animated)
-    }
-    
-    func gf_scrollToRightAnimated(_ animated: Bool) {
-        var off = self.contentOffset
-        off.x = self.contentSize.width - self.bounds.size.width + self.contentInset.right
-        self.setContentOffset(off, animated: animated)
-    }
-}
-
-extension UITableView {
-    
-    func gf_scrollToRow(_ row: Int, in section: Int, atScrollPosition position: UITableView.ScrollPosition, _ animated: Bool) {
+    func scrollToRow(_ row: Int, in section: Int, atScrollPosition position: UITableView.ScrollPosition, _ animated: Bool) {
         let indexpath = IndexPath(row: row, section: section)
-        self.scrollToRow(at: indexpath, at: position, animated: animated)
+        base.scrollToRow(at: indexpath, at: position, animated: animated)
     }
     
-    func gf_insertRow(at indexPath: IndexPath, withRowAnimation animation: UITableView.RowAnimation) {
-        self.insertRows(at: [indexPath], with: animation)
+    func insertRow(at indexPath: IndexPath, withRowAnimation animation: UITableView.RowAnimation) {
+        base.insertRows(at: [indexPath], with: animation)
     }
     
-    func gf_insertRow(_ row: Int, in section: Int, withRowAnimation animation: UITableView.RowAnimation) {
+    func insertRow(_ row: Int, in section: Int, withRowAnimation animation: UITableView.RowAnimation) {
         let toInsert = IndexPath(row: row, section: section)
-        self.gf_insertRow(at: toInsert, withRowAnimation: animation)
+        base.gf.insertRow(at: toInsert, withRowAnimation: animation)
     }
     
-    func gf_reloadRow(at indexPath: IndexPath, withRowAnimation animation: UITableView.RowAnimation) {
-        self.reloadRows(at: [indexPath], with: animation)
+    func reloadRow(at indexPath: IndexPath, withRowAnimation animation: UITableView.RowAnimation) {
+        base.reloadRows(at: [indexPath], with: animation)
     }
     
-    func gf_reloadRow(_ row: Int, in section: Int, withRowAnimation animation: UITableView.RowAnimation) {
+    func reloadRow(_ row: Int, in section: Int, withRowAnimation animation: UITableView.RowAnimation) {
         let toReload = IndexPath(row: row, section: section)
-        self.gf_reloadRow(at: toReload, withRowAnimation: animation)
+        base.gf.reloadRow(at: toReload, withRowAnimation: animation)
     }
     
-    func gf_deleteRow(at indexPath: IndexPath, withRowAnimation animation: UITableView.RowAnimation) {
+    func deleteRow(at indexPath: IndexPath, withRowAnimation animation: UITableView.RowAnimation) {
         
     }
 }
@@ -679,8 +667,8 @@ fileprivate class GestureTarget: UIView {
     }
 }
 
-extension UIDevice {
-    var gf_modelName: String {
+extension GFCompat where Base: UIDevice {
+    var modelName: String {
         var systemInfo = utsname()
         uname(&systemInfo)
         let machineMirror = Mirror(reflecting: systemInfo.machine)
@@ -727,6 +715,27 @@ extension UIDevice {
         default:                                        return identifier
         }
     }
+    
+    /// 检查系统语言是否变动
+    ///
+    /// - Returns: ture 变动,false 未变动
+    func langChanged() -> Bool {
+        guard let currentLanguage = NSLocale.preferredLanguages.first else {
+            return false;
+        }
+        if let preLanguage = UserDefaults.standard.object(forKey: "localLanguage") as? String {
+            if preLanguage != currentLanguage {
+                UserDefaults.standard.set(currentLanguage, forKey: "localLanguage");
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            UserDefaults.standard.set(currentLanguage, forKey: "localLanguage");
+            return false;
+        }
+    }
+
 }
 
 

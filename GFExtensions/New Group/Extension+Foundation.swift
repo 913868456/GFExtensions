@@ -8,9 +8,9 @@
 
 import Foundation
 
-extension UserDefaults {
+extension GFCompat where Base: UserDefaults {
     
-    static func gf_launchFirst() -> Bool {//应用第一次启动
+    static func firstLaunch() -> Bool {//应用第一次启动
         let hasBeenLaunched = "hasBeenLaunched"
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunched)
         if isFirstLaunch {
@@ -20,7 +20,7 @@ extension UserDefaults {
         return isFirstLaunch
     }
     
-    static func gf_versionLaunchFirst() -> Bool {//当前版本第一次启动
+    static func versionFirstLaunch() -> Bool {//当前版本第一次启动
         //主程序版本号
         let infoDictionary = Bundle.main.infoDictionary!
         let majorVersion = infoDictionary["CFBundleShortVersionString"] as! String
@@ -48,10 +48,22 @@ extension Data {
 }
 
 extension Date {
+    /// 返回指定格式的日期字符串
+    ///
+    /// - Parameter formatter: e.g. "yyyy-MM-dd HH:ss"
+    /// - Returns: e.g. "2019-05-01 13:23"
     func gf_string(with formatter: String) -> String {
         let df = DateFormatter()
         df.dateFormat = formatter
         return df.string(from: self)
+    }
+    
+    /// 获取系统时间戳
+    ///
+    /// - Returns: timeStamp since 1970
+    static func gf_getSystimeStamp() -> String {
+        let timeStamp =  Date.init().timeIntervalSince1970
+        return "\(timeStamp)"
     }
 }
 
@@ -121,7 +133,7 @@ extension String {
         }
         
         if string.hasSuffix("."){
-            let i = string.index(of: ".")!;
+            let i = string.firstIndex(of: ".")!;
             string.remove(at: i);
         }
         return string;
@@ -157,13 +169,13 @@ extension Collection {//数组越界解决方案
     }
 }
 
-extension FileManager {
-    class func documentsDir() -> String {
+extension GFCompat where Base: FileManager {
+    static func docDir() -> String {
         var paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) as [String]
         return paths[0]
     }
     
-    class func cachesDir() -> String {
+    static func cacheDir() -> String {
         var paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true) as [String]
         return paths[0]
     }

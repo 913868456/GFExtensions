@@ -9,10 +9,6 @@
 import Foundation
 import UIKit
 
-extension NSObject {
-    typealias GFObject = NSObject
-    var gf: GFObject { return self}
-}
 
 // MARK: - 颜色
 

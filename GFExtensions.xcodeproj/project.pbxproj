@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C0BB68F22A4C420009327F3 /* GFCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0BB68E22A4C420009327F3 /* GFCompatible.swift */; };
 		1C149754213F70E800197EA0 /* GlobalConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C149753213F70E800197EA0 /* GlobalConst.swift */; };
 		1CAC55072113F4C000D2D29F /* Extension+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC55062113F4C000D2D29F /* Extension+UIKit.swift */; };
 		1CAC55092113F4DA00D2D29F /* Extension+Foundation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC55082113F4DA00D2D29F /* Extension+Foundation.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1C0BB68E22A4C420009327F3 /* GFCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFCompatible.swift; sourceTree = "<group>"; };
 		1C149753213F70E800197EA0 /* GlobalConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConst.swift; sourceTree = "<group>"; };
 		1CAC55062113F4C000D2D29F /* Extension+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIKit.swift"; sourceTree = "<group>"; };
 		1CAC55082113F4DA00D2D29F /* Extension+Foundation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Foundation.swift"; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				1CAC55062113F4C000D2D29F /* Extension+UIKit.swift */,
 				1CAC55082113F4DA00D2D29F /* Extension+Foundation.swift */,
 				1C149753213F70E800197EA0 /* GlobalConst.swift */,
+				1C0BB68E22A4C420009327F3 /* GFCompatible.swift */,
 			);
 			path = "New Group";
 			sourceTree = "<group>";
@@ -210,13 +213,16 @@
 				TargetAttributes = {
 					1CBB46272113150A0054F0E0 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1020;
 					};
 					1CBB463B2113150C0054F0E0 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = 1CBB46272113150A0054F0E0;
 					};
 					1CBB46462113150C0054F0E0 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = 1CBB46272113150A0054F0E0;
 					};
 				};
@@ -275,6 +281,7 @@
 			files = (
 				1C149754213F70E800197EA0 /* GlobalConst.swift in Sources */,
 				1CAC55092113F4DA00D2D29F /* Extension+Foundation.swift in Sources */,
+				1C0BB68F22A4C420009327F3 /* GFCompatible.swift in Sources */,
 				1CAC55072113F4C000D2D29F /* Extension+UIKit.swift in Sources */,
 				1CBB462E2113150A0054F0E0 /* ViewController.swift in Sources */,
 				1CBB462C2113150A0054F0E0 /* AppDelegate.swift in Sources */,
@@ -461,7 +468,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fangshen.GFExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -479,7 +486,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fangshen.GFExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -499,7 +506,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fangshen.GFExtensionsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GFExtensions.app/GFExtensions";
 			};
@@ -520,7 +527,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fangshen.GFExtensionsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GFExtensions.app/GFExtensions";
 			};
@@ -540,7 +547,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fangshen.GFExtensionsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = GFExtensions;
 			};
@@ -560,7 +567,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.fangshen.GFExtensionsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = GFExtensions;
 			};
