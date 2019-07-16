@@ -10,6 +10,89 @@ import Foundation
 
 extension GFCompat where Base: UserDefaults {
     
+    enum UserDataKeys: String {
+        case userid
+        case userToken
+        case telephone
+        case appstoreVersion //苹果商店版本号，用于启动页
+        case serverVersion //软件版本号，用于更新提示
+        case netEnviroment
+        case userAlias     //最后一次设置的别名
+        case enablePush
+    }
+    
+    static var enablePush: Bool? {
+        set {
+            Base.standard.set(newValue, forKey: UserDataKeys.enablePush.rawValue)
+        }
+        get {
+            return Base.standard.bool(forKey: UserDataKeys.enablePush.rawValue)
+        }
+    }
+    
+    static var telephone: String? {
+        set {
+            Base.standard.set(newValue, forKey: UserDataKeys.telephone.rawValue)
+        }
+        get {
+            return Base.standard.string(forKey: UserDataKeys.telephone.rawValue)
+        }
+    }
+    
+    static var userAlias: String? {
+        set {
+            Base.standard.set(newValue, forKey: UserDataKeys.userAlias.rawValue)
+        }
+        get {
+            return Base.standard.string(forKey: UserDataKeys.userAlias.rawValue)
+        }
+    }
+    
+    static var userId: Int? {
+        set {
+            Base.standard.set(newValue, forKey: UserDataKeys.userid.rawValue)
+        }
+        get {
+            return Base.standard.integer(forKey: UserDataKeys.userid.rawValue)
+        }
+    }
+    
+    static var userToken: String? {
+        set {
+            Base.standard.set(newValue, forKey: UserDataKeys.userToken.rawValue)
+        }
+        get {
+            return Base.standard.string(forKey: UserDataKeys.userToken.rawValue)
+        }
+    }
+    
+    static var appstoreVersion: String? {
+        set {
+            Base.standard.set(newValue, forKey: UserDataKeys.appstoreVersion.rawValue)
+        }
+        get {
+            return Base.standard.string(forKey: UserDataKeys.appstoreVersion.rawValue)
+        }
+    }
+    
+    static var serverVersion: String? {
+        set {
+            Base.standard.set(newValue, forKey: UserDataKeys.serverVersion.rawValue)
+        }
+        get {
+            return Base.standard.string(forKey: UserDataKeys.serverVersion.rawValue)
+        }
+    }
+    
+    static var networkEnvIndex: Int? {
+        set {
+            Base.standard.set(newValue, forKey: UserDataKeys.netEnviroment.rawValue)
+        }
+        get {
+            return Base.standard.integer(forKey: UserDataKeys.netEnviroment.rawValue)
+        }
+    }
+    
     static func firstLaunch() -> Bool {//应用第一次启动
         let hasBeenLaunched = "hasBeenLaunched"
         let isFirstLaunch = !UserDefaults.standard.bool(forKey: hasBeenLaunched)

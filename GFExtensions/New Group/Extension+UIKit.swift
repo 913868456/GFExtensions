@@ -9,6 +9,16 @@
 import Foundation
 import UIKit
 
+
+// iOS scrollview 带有导航栏时自动调整内边距问题
+func adjustScrollContentInset(_ controller: UIViewController, _ scrollView: UIScrollView?) {
+    if #available(iOS 11.0, *) {
+        scrollView?.contentInsetAdjustmentBehavior = .never
+    }else{
+        controller.automaticallyAdjustsScrollViewInsets = false
+    }
+}
+
 extension GFCompat where Base: UIViewController {
     func setStatusBarColor(color : UIColor) {
         if UIScreen.gf.isFullScreen {
@@ -79,12 +89,21 @@ extension GFCompat where Base: UIScreen {
         return UIApplication.shared.statusBarFrame.size.height
     }
     
-    static var bottomSafeHeight: CGFloat {
-        return isFullScreen ? (UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0) : 0
-    }
-    
-    static var gf_bottomBarHeight: CGFloat {
+    static var bottomBarHeight: CGFloat {
         return isFullScreen ? 83 : 49
+    }
+}
+
+extension CGFloat {
+    var appendBottomOffset: CGFloat {
+        if #available(iOS 11.0, *) {
+            if let window = UIApplication.shared.keyWindow {
+                return window.safeAreaInsets.bottom
+            }
+            return 0
+        }else{
+            return 0
+        }
     }
 }
 
@@ -738,4 +757,44 @@ extension GFCompat where Base: UIDevice {
 
 }
 
+///环境参数，影响上传和服务器连接
+class NetEnviroment: NSObject {
+    let baseUrl: String
+    let bucket: String
+    let replacementUrl: String?
+    let name: String
+    let h5Url: String
+    
+    init(baseUrlString: String, bucket: String, replacementUrl:String?,
+         name: String, emchatKey: String, h5Url: String, emchatApnName: String) {
+        self.baseUrl = baseUrlString
+        self.bucket = bucket
+        self.replacementUrl = replacementUrl
+        self.name = name
+        self.h5Url = h5Url
+    }
+    
+    var isProductEnvironment: Bool {
+        return bucket == "hltravel"
+    }
+    
+    
+    static var testServer: NetEnviroment {
+        return NetEnviroment(baseUrlString: "http://218.247.21.4:8084",
+                          bucket: "hltext", replacementUrl: nil, name: "测试环境（外）", emchatKey: "1125181127181795#hllx-test", h5Url: "http://testwap.honglelx.com", emchatApnName: "开发证书")
+    }
+    
+    
+    static var productServer: NetEnviroment {
+        return NetEnviroment(baseUrlString: "http://app.honglelx.com",
+                          bucket: "hltravel",
+                          replacementUrl: "img.honglelx.com/", name: "正式环境", emchatKey: "1125181127181795#hllx-travelshop", h5Url: "http://wap.honglelx.com", emchatApnName: "正式证书")
+    }
+    
+    static var enviroments = [NetEnviroment.productServer,
+                              NetEnviroment.testServer]
+    
+}
+
+let currentEnv = NetEnviroment.enviroments[UserDefaults.gf.networkEnvIndex ?? 0]
 
