@@ -349,6 +349,38 @@ extension GFCompat where Base: UILabel {
 // MARK: - UIButton
 extension GFCompat where Base: UIButton {
     
+    enum ButtonLayoutPosition {
+        case `default`  //image left, title right
+        case imageRight
+        case imageTop
+        case imageBottom
+    }
+    
+    func layoutWithPosiziton(_ position: ButtonLayoutPosition = .default, space: CGFloat = 0) {
+        base.layoutIfNeeded()
+        let imageSize = base.imageView?.intrinsicContentSize ?? CGSize.zero
+        let titleSize = base.titleLabel?.intrinsicContentSize ?? CGSize.zero
+        
+        var titleEdgeInset = UIEdgeInsets.zero
+        var imageEdgeInset = UIEdgeInsets.zero
+        switch position {
+        case .imageTop:
+            imageEdgeInset = UIEdgeInsets(top: -titleSize.height - space/2.0, left: 0, bottom: 0, right: -titleSize.width)
+            titleEdgeInset = UIEdgeInsets(top: 0, left: -imageSize.width, bottom: -imageSize.height - space/2.0, right: 0)
+        case .imageBottom:
+            imageEdgeInset = UIEdgeInsets(top: 0, left: 0, bottom: -titleSize.height - space/2.0, right: -titleSize.width)
+            titleEdgeInset = UIEdgeInsets(top: -imageSize.height - space/2.0, left: -imageSize.width, bottom: 0, right: 0)
+        case .imageRight:
+            imageEdgeInset = UIEdgeInsets(top: 0, left: titleSize.width + space/2.0, bottom: 0, right: -titleSize.width - space/2.0)
+            titleEdgeInset = UIEdgeInsets(top: 0, left: -imageSize.width - space/2.0, bottom: 0, right: imageSize.width + space/2.0)
+        default:
+            imageEdgeInset = UIEdgeInsets(top: 0, left: -space/2.0, bottom: 0, right: space/2.0)
+            titleEdgeInset = UIEdgeInsets(top: 0, left:  space/2.0, bottom: 0, right: -space/2.0)
+        }
+        base.titleEdgeInsets = titleEdgeInset
+        base.imageEdgeInsets = imageEdgeInset
+    }
+    
     func setBackgroundColor(color: UIColor, forState: UIControl.State) {
         
         UIGraphicsBeginImageContext(CGSize(width: 1, height: 1))
