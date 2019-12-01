@@ -46,11 +46,12 @@ extension UIViewEnlarge {
         self.right = NSNumber(value: right)
         self.bottom = NSNumber(value: bottom)
     }
-    func setEnlargeEdge(_ surround: Float){
-        self.top = NSNumber(value: surround)
-        self.left = NSNumber(value: surround)
-        self.right = NSNumber(value: surround)
-        self.bottom = NSNumber(value: surround)
+
+    func setEnlargeEdge(_ surround: Float) {
+        top = NSNumber(value: surround)
+        left = NSNumber(value: surround)
+        right = NSNumber(value: surround)
+        bottom = NSNumber(value: surround)
     }
 
     func enlargedRect() -> CGRect {
@@ -87,8 +88,8 @@ private func associateObject<ValueType: AnyObject>(base: AnyObject, key: UnsafeP
 }
 
 private func shtSwizzleMethod(cls: AnyClass?, ori: Selector, new: Selector) {
-    guard let oriMethod = class_getInstanceMethod(cls, ori) else {return}
-    guard let newMethod = class_getInstanceMethod(cls, new) else {return}
+    guard let oriMethod = class_getInstanceMethod(cls, ori) else { return }
+    guard let newMethod = class_getInstanceMethod(cls, new) else { return }
     if class_addMethod(cls, ori, method_getImplementation(newMethod), method_getTypeEncoding(newMethod)) {
         class_replaceMethod(cls, new, method_getImplementation(oriMethod), method_getTypeEncoding(oriMethod))
     } else {
@@ -96,21 +97,22 @@ private func shtSwizzleMethod(cls: AnyClass?, ori: Selector, new: Selector) {
     }
 }
 
-extension UIButton : UIViewEnlarge {
+extension UIButton: UIViewEnlarge {
     open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         let rect = enlargedRect()
-        
+
         if rect.equalTo(bounds) { return super.point(inside: point, with: event) }
-        
+
         return rect.contains(point) ? true : false
     }
 }
-extension UIImageView : UIViewEnlarge {
+
+extension UIImageView: UIViewEnlarge {
     open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         let rect = enlargedRect()
-        
+
         if rect.equalTo(bounds) { return super.point(inside: point, with: event) }
-        
+
         return rect.contains(point) ? true : false
     }
 }

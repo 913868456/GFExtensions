@@ -24,7 +24,7 @@ extension AssociatedObjectStore {
             return object
         }
         let object = `default`()
-        self.setAssociatedObject(object, forKey: key)
+        setAssociatedObject(object, forKey: key)
         return object
     }
 }

@@ -11,7 +11,7 @@ import UIKit
 
 public struct GFCompat<Base> {
     public let base: Base
-    public init(_ base: Base){
+    public init(_ base: Base) {
         self.base = base
     }
 }
@@ -31,24 +31,23 @@ extension GFCompatible {
             // this enables using GfCompat to "mutate" base type
         }
     }
+
     public var gf: GFCompat<Self> {
         get {
             return GFCompat(self)
         }
-        set {
-            
-        }
+        set {}
     }
 }
 
 import class Foundation.NSObject
 
 /// Extend NSObject with `gf` proxy.
-extension NSObject: GFCompatible { }
-extension Data: GFCompatible { }
-extension String: GFCompatible { }
-extension Date: GFCompatible { }
-extension CGFloat: GFCompatible { }
-extension Int: GFCompatible { }
-extension Double: GFCompatible { }
-extension Float: GFCompatible { }
+extension NSObject: GFCompatible {}
+extension Data: GFCompatible {}
+extension String: GFCompatible {}
+extension Date: GFCompatible {}
+extension CGFloat: GFCompatible {}
+extension Int: GFCompatible {}
+extension Double: GFCompatible {}
+extension Float: GFCompatible {}
