@@ -16,30 +16,32 @@ private var rightKey: UInt8 = 0
 
 protocol UIViewEnlarge: UIView {}
 extension UIViewEnlarge {
-    var top: NSNumber {
+    private var top: NSNumber {
         get { return associatedObject(base: self, key: &topKey) { 0 } }
         set { associateObject(base: self, key: &topKey, value: newValue) }
     }
 
-    var bottom: NSNumber {
+    private var bottom: NSNumber {
         get { return associatedObject(base: self, key: &bottomKey) { 0 } }
         set { associateObject(base: self, key: &bottomKey, value: newValue) }
     }
 
-    var left: NSNumber {
+    private var left: NSNumber {
         get { return associatedObject(base: self, key: &leftKey) { 0 } }
         set { associateObject(base: self, key: &leftKey, value: newValue) }
     }
 
-    var right: NSNumber {
+    private var right: NSNumber {
         get { return associatedObject(base: self, key: &rightKey) { 0 } }
         set { associateObject(base: self, key: &rightKey, value: newValue) }
     }
 
+    /// 设置控件需要扩展响应的边界值
     func setEnlargeEdge(_ inset: UIEdgeInsets) {
         setEnlargeEdge(top: Float(inset.top), bottom: Float(inset.bottom), left: Float(inset.left), right: Float(inset.right))
     }
 
+    /// 设置控件需要扩展响应的边界值
     func setEnlargeEdge(top: Float, bottom: Float, left: Float, right: Float) {
         self.top = NSNumber(value: top)
         self.left = NSNumber(value: left)
@@ -47,6 +49,7 @@ extension UIViewEnlarge {
         self.bottom = NSNumber(value: bottom)
     }
 
+    /// 设置控件需要扩展响应的边界值
     func setEnlargeEdge(_ surround: Float) {
         top = NSNumber(value: surround)
         left = NSNumber(value: surround)
@@ -54,7 +57,8 @@ extension UIViewEnlarge {
         bottom = NSNumber(value: surround)
     }
 
-    func enlargedRect() -> CGRect {
+    /// 扩大控件响应范围
+    fileprivate  func enlargedRect() -> CGRect {
         let top = self.top
         let bottom = self.bottom
         let left = self.left

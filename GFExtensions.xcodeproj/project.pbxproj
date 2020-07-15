@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1C0BB68F22A4C420009327F3 /* GFCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0BB68E22A4C420009327F3 /* GFCompatible.swift */; };
-		1C149754213F70E800197EA0 /* GlobalConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C149753213F70E800197EA0 /* GlobalConst.swift */; };
 		1C4943DF237D2F6800090E72 /* Runtime+AssociatedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4943DE237D2F6800090E72 /* Runtime+AssociatedObject.swift */; };
 		1C4943E1237D3A8E00090E72 /* UIBtton+touchEnlarge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C4943E0237D3A8E00090E72 /* UIBtton+touchEnlarge.swift */; };
 		1CAC55072113F4C000D2D29F /* Extension+UIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CAC55062113F4C000D2D29F /* Extension+UIKit.swift */; };
@@ -41,7 +40,6 @@
 
 /* Begin PBXFileReference section */
 		1C0BB68E22A4C420009327F3 /* GFCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFCompatible.swift; sourceTree = "<group>"; };
-		1C149753213F70E800197EA0 /* GlobalConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalConst.swift; sourceTree = "<group>"; };
 		1C4943DE237D2F6800090E72 /* Runtime+AssociatedObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Runtime+AssociatedObject.swift"; sourceTree = "<group>"; };
 		1C4943E0237D3A8E00090E72 /* UIBtton+touchEnlarge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBtton+touchEnlarge.swift"; sourceTree = "<group>"; };
 		1CAC55062113F4C000D2D29F /* Extension+UIKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIKit.swift"; sourceTree = "<group>"; };
@@ -86,15 +84,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1C4943DD237D2F2C00090E72 /* Tool */ = {
-			isa = PBXGroup;
-			children = (
-				1C4943DE237D2F6800090E72 /* Runtime+AssociatedObject.swift */,
-				1C4943E0237D3A8E00090E72 /* UIBtton+touchEnlarge.swift */,
-			);
-			path = Tool;
-			sourceTree = "<group>";
-		};
 		1CBB461F2113150A0054F0E0 = {
 			isa = PBXGroup;
 			children = (
@@ -118,8 +107,7 @@
 		1CBB462A2113150A0054F0E0 /* GFExtensions */ = {
 			isa = PBXGroup;
 			children = (
-				1C4943DD237D2F2C00090E72 /* Tool */,
-				1CBB46592113152C0054F0E0 /* Extension */,
+				1CBB46592113152C0054F0E0 /* Extension+Tools */,
 				1CBB462B2113150A0054F0E0 /* AppDelegate.swift */,
 				1CBB462D2113150A0054F0E0 /* ViewController.swift */,
 				1CBB462F2113150A0054F0E0 /* Main.storyboard */,
@@ -148,15 +136,16 @@
 			path = GFExtensionsUITests;
 			sourceTree = "<group>";
 		};
-		1CBB46592113152C0054F0E0 /* Extension */ = {
+		1CBB46592113152C0054F0E0 /* Extension+Tools */ = {
 			isa = PBXGroup;
 			children = (
+				1C4943DE237D2F6800090E72 /* Runtime+AssociatedObject.swift */,
+				1C4943E0237D3A8E00090E72 /* UIBtton+touchEnlarge.swift */,
 				1CAC55062113F4C000D2D29F /* Extension+UIKit.swift */,
 				1CAC55082113F4DA00D2D29F /* Extension+Foundation.swift */,
-				1C149753213F70E800197EA0 /* GlobalConst.swift */,
 				1C0BB68E22A4C420009327F3 /* GFCompatible.swift */,
 			);
-			path = Extension;
+			path = "Extension+Tools";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,7 +282,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C149754213F70E800197EA0 /* GlobalConst.swift in Sources */,
 				1C4943DF237D2F6800090E72 /* Runtime+AssociatedObject.swift in Sources */,
 				1CAC55092113F4DA00D2D29F /* Extension+Foundation.swift in Sources */,
 				1C0BB68F22A4C420009327F3 /* GFCompatible.swift in Sources */,

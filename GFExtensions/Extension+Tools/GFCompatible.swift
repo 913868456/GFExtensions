@@ -47,7 +47,3 @@ extension NSObject: GFCompatible {}
 extension Data: GFCompatible {}
 extension String: GFCompatible {}
 extension Date: GFCompatible {}
-extension CGFloat: GFCompatible {}
-extension Int: GFCompatible {}
-extension Double: GFCompatible {}
-extension Float: GFCompatible {}

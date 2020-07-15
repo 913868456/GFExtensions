@@ -10,10 +10,11 @@ import CoreGraphics
 import Foundation
 import ImageIO
 import UIKit
+import Photos
 
 // MARK: UIEdgeInsets
 
-extension GFCompat where Base == UIEdgeInsets {
+public extension GFCompat where Base == UIEdgeInsets {
     static func all(_ side: CGFloat) -> UIEdgeInsets {
         return .init(top: side, left: side, bottom: side, right: side)
     }
@@ -41,7 +42,7 @@ extension GFCompat where Base == UIEdgeInsets {
 
 // MARK: - UIViewController
 
-extension GFCompat where Base: UIViewController {
+public extension GFCompat where Base: UIViewController {
     // 适配scrollview边距
     func adjustScrollContentInset(_ scroll: UIScrollView?) {
         if #available(iOS 11.0, *) {
@@ -72,8 +73,8 @@ extension GFCompat where Base: UIViewController {
 
 // MARK: - UINavigationController
 
-extension GFCompat where Base: UINavigationController {
-    /// 设置导航栏背景色
+public extension GFCompat where Base: UINavigationController {
+    /// 设置导航栏背景透明度
     func backgroundAlpha(alpha: CGFloat) {
         if let barBackgroundView = base.navigationBar.subviews.first {
             if #available(iOS 11.0, *) {
@@ -93,7 +94,7 @@ extension GFCompat where Base: UINavigationController {
 
 // MARK: - UIScreen
 
-extension GFCompat where Base: UIScreen {
+public extension GFCompat where Base: UIScreen {
     /// Size
     static var isFullScreen: Bool {
         if #available(iOS 11, *) {
@@ -130,24 +131,9 @@ extension GFCompat where Base: UIScreen {
     }
 }
 
-// MARK: - CGFloat
-
-extension GFCompat where Base == CGFloat {
-    var appendBottomOffset: CGFloat {
-        if #available(iOS 11.0, *) {
-            if let window = UIApplication.shared.keyWindow {
-                return window.safeAreaInsets.bottom
-            }
-            return 0
-        } else {
-            return 0
-        }
-    }
-}
-
 // MARK: - UIView
 
-extension GFCompat where Base: UIView {
+public extension GFCompat where Base: UIView {
     var x: CGFloat {
         set {
             base.frame.origin.x = newValue
@@ -227,8 +213,7 @@ extension GFCompat where Base: UIView {
         return base.frame.maxX
     }
 
-    // MARK: View 画圆角
-
+    /// 画圆角
     func roundCorners(radius: CGFloat, _ corners: UIRectCorner = UIRectCorner.allCorners) {
         let rect = CGRect(x: 0, y: 0, width: base.bounds.width, height: base.bounds.height)
         let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
@@ -243,8 +228,7 @@ extension GFCompat where Base: UIView {
         }
     }
 
-    // MARK: 过渡色
-
+    /// 渐变色
     @discardableResult
     func addGradient(colors: [UIColor], startPoint: CGPoint = CGPoint(x: 0.5, y: 0), endPoint: CGPoint = CGPoint(x: 0.5, y: 1)) -> CAGradientLayer {
         let gradient = CAGradientLayer()
@@ -256,8 +240,7 @@ extension GFCompat where Base: UIView {
         return gradient
     }
 
-    // MARK: 获取View的第一响应者
-
+    /// 获取View的第一响应者
     var firstResponder: UIView? {
         guard !base.isFirstResponder else { return base }
         for subview in base.subviews {
@@ -268,8 +251,7 @@ extension GFCompat where Base: UIView {
         return nil
     }
 
-    // MARK: - 截屏
-
+    /// 截屏
     func screenShot() -> UIImage? {
         var image: UIImage?
 
@@ -289,8 +271,7 @@ extension GFCompat where Base: UIView {
         return image
     }
 
-    // MARK: 获取当前控制器
-
+    /// 获取当前控制器
     func ownerController() -> UIViewController? {
         var n = base.next
         while n != nil {
@@ -302,8 +283,7 @@ extension GFCompat where Base: UIView {
         return nil
     }
 
-    // MARK: 阴影
-
+    /// 阴影
     func addShadow(color: UIColor = UIColor.black.withAlphaComponent(0.05), offset: CGSize = .zero, opacity: Float = 1, shadowRadius: CGFloat = 11) {
         base.layer.shadowColor = color.cgColor
         base.layer.shadowOffset = offset
@@ -318,20 +298,19 @@ extension GFCompat where Base: UIView {
         base.layer.shadowRadius = 0
     }
 
-    // MARK: UIViewAnimation
-
+    /// UIViewAnimation 旋转
     static func transformRotate(view: UIView, duration: TimeInterval, rotationAngle angle: CGFloat) {
         UIView.animate(withDuration: duration) {
             view.transform = CGAffineTransform(rotationAngle: angle)
         }
     }
-
+    /// 平移
     static func transformTranslate(view: UIView, duration: TimeInterval, translationX tx: CGFloat, y ty: CGFloat) {
         UIView.animate(withDuration: duration) {
             view.transform = CGAffineTransform(translationX: tx, y: ty)
         }
     }
-
+    /// 缩放
     static func transformScale(view: UIView, duration: TimeInterval, scaleX sx: CGFloat, y sy: CGFloat) {
         UIView.animate(withDuration: duration) {
             view.transform = CGAffineTransform(scaleX: sx, y: sy)
@@ -341,7 +320,7 @@ extension GFCompat where Base: UIView {
 
 // MARK: - UILabel
 
-extension GFCompat where Base: UILabel {
+public extension GFCompat where Base: UILabel {
     func setTextColor(textColor: UIColor, font: UIFont, _ alignment: NSTextAlignment = .center) {
         base.textColor = textColor
         base.font = font
@@ -358,14 +337,18 @@ extension GFCompat where Base: UILabel {
 
 // MARK: - UIButton
 
-extension GFCompat where Base: UIButton {
+public extension GFCompat where Base: UIButton {
     enum ButtonLayoutPosition {
         case `default` // image left, title right
         case imageRight
         case imageTop
         case imageBottom
     }
-
+    
+    /// 布局位置
+    /// - Parameters:
+    ///   - position: 默认左图右文
+    ///   - space: 图文间距
     func layoutWithPosiziton(_ position: ButtonLayoutPosition = .default, space: CGFloat = 0) {
         base.layoutIfNeeded()
         let imageSize = base.imageView?.intrinsicContentSize ?? CGSize.zero
@@ -390,11 +373,24 @@ extension GFCompat where Base: UIButton {
         base.titleEdgeInsets = titleEdgeInset
         base.imageEdgeInsets = imageEdgeInset
     }
-
-    func setBackgroundColor(color _: UIColor, forState _: UIControl.State) {}
+    
+    /// Button背景色
+    /// - Parameters:
+    ///   - color: 颜色
+    ///   - state: 状态
+    func setBackgroundColor(_ color: UIColor, for state: UIControl.State) {
+        let image = UIImage.init(color: color)
+        base.setBackgroundImage(image, for: state)
+    }
 }
 
+// MARK: - UIImage
 extension UIImage {
+    
+    /// 生成指定颜色和尺寸的图片, 尺寸默认为 CGSize(width:1, height:1)
+    /// - Parameters:
+    ///   - color: 颜色
+    ///   - size: 尺寸
     convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
         let rect = CGRect(origin: .zero, size: size)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0.0)
@@ -406,7 +402,11 @@ extension UIImage {
         guard let cgImage = image?.cgImage else { return nil }
         self.init(cgImage: cgImage)
     }
-
+    
+    /// view生成图片
+    /// - Parameters:
+    ///   - view: 需要生成图片的view
+    ///   - scale: 缩放倍率
     convenience init(view: UIView, scale: CGFloat) {
         UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.isOpaque, scale)
         view.drawHierarchy(in: view.bounds, afterScreenUpdates: false)
@@ -415,10 +415,62 @@ extension UIImage {
         let image = UIGraphicsGetImageFromCurrentImageContext()
         self.init(cgImage: (image?.cgImage)!)
     }
+    
+    /// 画圆
+    /// - Parameters:
+    ///   - size: 圆的大小
+    ///   - color: 圆的颜色
+    class func setArc(size: CGSize, color: UIColor) -> UIImage? {
+        UIGraphicsBeginImageContext(size)
+        
+        let context = UIGraphicsGetCurrentContext()
+        context?.setFillColor(color.cgColor)
+        context?.move(to: .zero)
+        context?.addArc(center: CGPoint(x: size.width/2.0, y: size.height/2.0), radius: size.width/2.0, startAngle: CGFloat.pi * 0, endAngle: CGFloat.pi * 2.0, clockwise: true)
+        context?.fillPath()
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+    
+    
+    /// 画线
+    /// - Parameters:
+    ///   - size: 线的大小
+    ///   - lineColor: 线颜色
+    ///   - length: 线长
+    ///   - lineCap: 线头的形状
+    ///   - phrase: dash间距
+    class func setLine(size: CGSize, lineColor: UIColor, length: [CGFloat] = [10,10], lineCap: CGLineCap = .square, phrase: CGFloat = 0) -> UIImage? {
+        UIGraphicsBeginImageContext(size)
+        
+        let context = UIGraphicsGetCurrentContext()
+        context?.setLineCap(lineCap)
+        context?.setLineWidth(size.height)
+        context?.setStrokeColor(lineColor.cgColor)
+        context?.setLineDash(phase: phrase, lengths: length)
+        context?.move(to: .zero)
+        context?.addLine(to: CGPoint(x: size.width, y: 0))
+        context?.stroke(CGRect(origin: .zero, size: size))
+        
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+    
+    
+    /// 画线
+    /// - Parameters:
+    ///   - size: 线的大小
+    ///   - lineColor: 线颜色
+    ///   - lineWidth: 线宽
+    class func lineImage(size: CGSize, lineColor: UIColor, lineWidth: CGFloat) -> UIImage? {
+       return self.setLine(size: size, lineColor: lineColor, length: [lineWidth, lineWidth])
+    }
 }
 
-/// 水印添加
-extension GFCompat where Base: UIImage {
+public extension GFCompat where Base: UIImage {
     /// Add WaterMarkingImage
     ///
     /// - Parameters:
@@ -462,6 +514,7 @@ extension GFCompat where Base: UIImage {
         return waterMarkingImage
     }
 
+    /// 修改图片填充色
     func transform(withNewColor color: UIColor) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(base.size, false, base.scale)
 
@@ -480,10 +533,46 @@ extension GFCompat where Base: UIImage {
         UIGraphicsEndImageContext()
         return newImage
     }
+    
+    /// 保存图片
+    func savedPhotos(_ completionHandler: ((Bool, Error?) -> Void)? = nil) {
+        PHPhotoLibrary.shared().performChanges({ PHAssetChangeRequest.creationRequestForAsset(from: self.base) }, completionHandler: { isSuccess, error in
+            DispatchQueue.main.async { completionHandler?(isSuccess, error) }
+        })
+    }
+
+    
+    /// 旋转图片
+    /// - Parameter angle: 旋转角度
+    func rotate(_ angle: Double) -> UIImage? {
+        if angle.truncatingRemainder(dividingBy: 360) == 0 { return base }
+
+        let imageRect = CGRect(origin: .zero, size: base.size)
+
+        let radian = CGFloat(angle) / CGFloat(180) * CGFloat.pi
+
+        var rotatedRect = imageRect.applying(CGAffineTransform.identity.rotated(by: radian))
+        rotatedRect.origin.x = 0
+        rotatedRect.origin.y = 0
+
+        UIGraphicsBeginImageContextWithOptions(rotatedRect.size, false, base.scale)
+
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+
+        context.translateBy(x: rotatedRect.width / 2, y: rotatedRect.height / 2)
+        context.rotate(by: radian)
+        context.translateBy(x: -base.size.width / 2, y: -base.size.height / 2)
+        
+        base.draw(at: CGPoint.zero)
+
+        let rotatedImage = UIGraphicsGetImageFromCurrentImageContext()
+        defer { UIGraphicsEndImageContext() }
+        return rotatedImage
+    }
 
     /// 图片裁圆角
     /// - Parameter cornerRadius: 圆角
-    public func roundCorners(_ cornerRadius: CGFloat) -> UIImage? {
+    func roundCorners(_ cornerRadius: CGFloat) -> UIImage? {
         return image(withRoundRadius: cornerRadius, fit: base.size, roundingCorners: .allCorners, backgroundColor: nil)
     }
 
@@ -494,7 +583,7 @@ extension GFCompat where Base: UIImage {
         return UIGraphicsGetImageFromCurrentImageContext() ?? base
     }
 
-    public func image(withRoundRadius radius: CGFloat,
+    func image(withRoundRadius radius: CGFloat,
                       fit size: CGSize,
                       roundingCorners corners: UIRectCorner = .allCorners,
                       backgroundColor: UIColor? = nil) -> UIImage? {
@@ -575,8 +664,14 @@ extension GFCompat where Base: UIImage {
     }
 }
 
-extension UIColor {
-    convenience init(hex: String) {
+// MARK: - UIColor
+public extension UIColor {
+    
+    /// HEX色值转换
+    /// - Parameters:
+    ///   - hex: hex
+    ///   - alpha: 透明度
+    convenience init(hex: String, alpha: CGFloat = 1.0) {
         var cString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 
         if cString.hasPrefix("#") {
@@ -598,54 +693,119 @@ extension UIColor {
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
             blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
-            alpha: CGFloat(1.0)
+            alpha: alpha
         )
     }
 }
 
-extension GFCompat where Base: UIColor {
+public extension GFCompat where Base: UIColor {
     /// 随机色
     static func randomColor() -> UIColor {
         return UIColor(red: CGFloat.random(in: 0 ... 255) / 255.0, green: CGFloat.random(in: 0 ... 255) / 255.0, blue: CGFloat.random(in: 0 ... 255) / 255.0, alpha: 1.0)
     }
 }
 
-extension GFCompat where Base == Int {
+// MARK: - CGFloat
+protocol CGFloatConvertble {
+    var f: CGFloat { get }
+}
+
+extension Int: CGFloatConvertble {
+      var f: CGFloat {
+          return CGFloat(self)
+      }
+}
+
+extension Float: CGFloatConvertble {
     var f: CGFloat {
-        return CGFloat(base)
+        return CGFloat(self)
     }
 }
 
-extension GFCompat where Base == Float {
+extension Double: CGFloatConvertble {
     var f: CGFloat {
-        return CGFloat(base)
+        return CGFloat(self)
     }
 }
 
-extension GFCompat where Base == Double {
-    var f: CGFloat {
-        return CGFloat(base)
-    }
-}
-
-extension CGFloat {
+// MARK: - 适配
+///尺寸适配
+public extension CGFloat {
     /// 视图中所有水平值都是宽度为375时设定的逻辑值，这里返回实际的水平方向上的值
-    var real: CGFloat {
+    var scale: CGFloat {
         return (self * UIScreen.gf.screenWidth) / 375.0
     }
 
-    /// 返回该数值在刘海影响下的数值
-    var realTopOffset: CGFloat {
+    /// 屏幕顶部该数值在刘海影响下的数值
+    var safeAreaTopOffset: CGFloat {
         if #available(iOS 11.0, *), let top = UIApplication.shared.keyWindow?.safeAreaInsets.top, top != 0 {
-            return (self + top - UIScreen.gf.statusBarHeight).real
+            return top + scale
         } else {
             // Fallback on earlier versions
-            return real
+            return scale
+        }
+    }
+    /// 屏幕底部该数值在刘海屏影响下的数值
+    var safeAreaBottomOffset: CGFloat {
+        if #available(iOS 11.0, *), let bottom = UIApplication.shared.keyWindow?.safeAreaInsets.bottom, bottom != 0 {
+            return bottom + scale
+        } else {
+            return scale
         }
     }
 }
 
-extension GFCompat where Base: UIScrollView {
+enum CompatibleFontWeight: String, CaseIterable {
+    case ultraLight = "HelveticaNeue-UltraLight"
+    case thin = "HelveticaNeue-Thin"
+    case light = "HelveticaNeue-Light"
+    case regular = "HelveticaNeue"
+    case medium = "HelveticaNeue-Medium"
+    case semibold = "Helvetica-Bold"
+    case bold = "HelveticaNeue-Bold"
+    case heavy = "HelveticaNeue-CondensedBold"
+    case black = "HelveticaNeue-CondensedBlack"
+
+    @available(iOS 8.2, *)
+    var systemWeight: UIFont.Weight {
+        switch self {
+        case .ultraLight:
+            return UIFont.Weight.ultraLight
+        case .thin:
+            return UIFont.Weight.thin
+        case .light:
+            return UIFont.Weight.light
+        case .regular:
+            return UIFont.Weight.regular
+        case .medium:
+            return UIFont.Weight.medium
+        case .semibold:
+            return UIFont.Weight.semibold
+        case .bold:
+            return UIFont.Weight.bold
+        case .heavy:
+            return UIFont.Weight.heavy
+        case .black:
+            return .black
+        }
+    }
+}
+
+/// 字体适配
+extension UIFont {
+    static func appFont(ofSize size: CGFloat, weight: CompatibleFontWeight = .regular) -> UIFont {
+        if #available(iOS 8.2, *) {
+            return UIFont.systemFont(ofSize: size, weight: weight.systemWeight)
+        } else if let font = UIFont(name: weight.rawValue, size: size) {
+            return font
+        } else {
+            return .systemFont(ofSize: size)
+        }
+    }
+}
+
+// MARK:  - UISCcrollView
+public extension GFCompat where Base: UIScrollView {
     func scrollToTop() {
         base.gf.scrollToTopAnimated(true)
     }
@@ -718,14 +878,11 @@ extension GFCompat where Base: UITableView {
 
 // MARK: - UIGestureRecognizer
 
-extension UIGestureRecognizer {
-    @discardableResult convenience init(addToView targetView: UIView,
-                                        closure: @escaping (UIGestureRecognizer) -> Void) {
+public extension UIGestureRecognizer {
+    @discardableResult
+    convenience init(addToView targetView: UIView, closure: @escaping (UIGestureRecognizer) -> Void) {
         self.init()
-
-        GestureTarget.add(gesture: self,
-                          closure: closure,
-                          toView: targetView)
+        GestureTarget.add(gesture: self, closure: closure, toView: targetView)
     }
 }
 
@@ -783,7 +940,6 @@ private class GestureTarget: UIView {
             guard let containerGesture = container.gesture else {
                 continue
             }
-
             if gesture === containerGesture {
                 container.closure(gesture)
             }
@@ -793,7 +949,7 @@ private class GestureTarget: UIView {
 
 // MARK: - UIApplication
 
-extension GFCompat where Base: UIApplication {
+public extension GFCompat where Base: UIApplication {
     static func openUrl(_ string: String?, _ complete: ((Bool) -> Void)? = nil) {
         guard let string = string, let url = URL(string: string), UIApplication.shared.canOpenURL(url) else { return }
         if #available(iOS 10.0, *) {
@@ -820,7 +976,7 @@ extension GFCompat where Base: UIApplication {
 
 // MARK: - UIDevice
 
-extension GFCompat where Base: UIDevice {
+public extension GFCompat where Base: UIDevice {
     /// 检查系统语言是否变动
     ///
     /// - Returns: ture 变动,false 未变动
@@ -842,15 +998,19 @@ extension GFCompat where Base: UIDevice {
     }
 }
 
-extension GFCompat where Base == String {
+// MARK: - String
+public extension GFCompat where Base == String {
+    /// 返回Int
     var int: Int? {
         return Int(base)
     }
 
+    /// 返回URL
     var url: URL? {
         return URL(string: base)
     }
 
+    /// 返回Float
     var float: Float? {
         let formatter = NumberFormatter()
         formatter.locale = .current
@@ -858,6 +1018,7 @@ extension GFCompat where Base == String {
         return formatter.number(from: base)?.floatValue
     }
 
+    /// 返回Double
     var double: Double? {
         let formatter = NumberFormatter()
         formatter.locale = .current
@@ -877,60 +1038,36 @@ extension GFCompat where Base == String {
         return rect
     }
 
+    
+    /// 文字的尺寸
+    /// - Parameters:
+    ///   - size: 文字的约束尺寸
+    ///   - font: 字号
+    ///   - maximumNumberOfLines: 最大行数
     func size(thatFits size: CGSize, font: UIFont, maximumNumberOfLines: Int = 0) -> CGSize {
         let attributes = [NSAttributedString.Key.font: font]
         var size = boundingRect(with: size, attributes: attributes).size
         if maximumNumberOfLines > 0 {
-            size.height = min(size.height, CGFloat(maximumNumberOfLines) * font.lineHeight)
+            size.height = max(size.height, CGFloat(maximumNumberOfLines) * font.lineHeight)
         }
         return size
     }
-
-    func width(with font: UIFont, maximumNumberOfLines: Int = 0) -> CGFloat {
+    
+    /// 单行文字的宽度
+    /// - Parameters:
+    ///   - font: 字号
+    func width(with font: UIFont) -> CGFloat {
         let size = CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
-        return self.size(thatFits: size, font: font, maximumNumberOfLines: maximumNumberOfLines).width
+        return self.size(thatFits: size, font: font).width
     }
-
+    
+    /// 指定宽度的文字高度
+    /// - Parameters:
+    ///   - width: 宽度
+    ///   - font: 字号
+    ///   - maximumNumberOfLines: 最大行数
     func height(thatFitsWidth width: CGFloat, font: UIFont, maximumNumberOfLines: Int = 0) -> CGFloat {
         let size = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         return self.size(thatFits: size, font: font, maximumNumberOfLines: maximumNumberOfLines).height
     }
 }
-
-/// 环境参数，影响上传和服务器连接
-class NetEnviroment: NSObject {
-    let baseUrl: String
-    let bucket: String
-    let replacementUrl: String?
-    let name: String
-    let h5Url: String
-
-    init(baseUrlString: String, bucket: String, replacementUrl: String?,
-         name: String, emchatKey _: String, h5Url: String, emchatApnName _: String) {
-        baseUrl = baseUrlString
-        self.bucket = bucket
-        self.replacementUrl = replacementUrl
-        self.name = name
-        self.h5Url = h5Url
-    }
-
-    var isProductEnvironment: Bool {
-        return bucket == "hltravel"
-    }
-
-    static var testServer: NetEnviroment {
-        return NetEnviroment(baseUrlString: "http://218.247.21.4:8084",
-                             bucket: "hltext", replacementUrl: nil, name: "测试环境（外）", emchatKey: "1125181127181795#hllx-test", h5Url: "http://testwap.honglelx.com", emchatApnName: "开发证书")
-    }
-
-    static var productServer: NetEnviroment {
-        return NetEnviroment(baseUrlString: "http://app.honglelx.com",
-                             bucket: "hltravel",
-                             replacementUrl: "img.honglelx.com/", name: "正式环境", emchatKey: "1125181127181795#hllx-travelshop", h5Url: "http://wap.honglelx.com", emchatApnName: "正式证书")
-    }
-
-    static var enviroments = [NetEnviroment.productServer,
-                              NetEnviroment.testServer]
-}
-
-let currentEnv = NetEnviroment.enviroments[UserDefaults.gf.networkEnvIndex ?? 0]
