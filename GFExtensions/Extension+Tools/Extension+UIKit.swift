@@ -876,6 +876,64 @@ extension GFCompat where Base: UITableView {
     }
 }
 
+// MARK: - UITextView
+@IBDesignable
+class GFTextView: UITextView {
+    let changeAnimationDuration = 0.25
+    let placeholerLabel = UILabel()
+
+    override var text: String! {
+        didSet {
+            self.textChange(nil)
+        }
+    }
+
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+        placeholerLabel.textColor = .lightGray
+        placeholerLabel.numberOfLines = 0
+        NotificationCenter.default.addObserver(self, selector: #selector(textChange(_:)), name: UITextView.textDidChangeNotification, object: self)
+    }
+
+    override class func awakeFromNib() {
+        super.awakeFromNib()
+        NotificationCenter.default.addObserver(self, selector: #selector(textChange(_:)), name: UITextView.textDidChangeNotification, object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc func textChange(_: NSNotification?) {
+        guard let txt = placeholerLabel.text, txt.isEmpty == false else { return }
+        UIView.animate(withDuration: changeAnimationDuration) {
+            if self.text.count == 0 {
+                self.placeholerLabel.alpha = 1
+            } else {
+                self.placeholerLabel.alpha = 0
+            }
+        }
+    }
+
+    override func draw(_ rect: CGRect) {
+        if placeholerLabel.frame == .zero {
+            let size = bounds.size
+            placeholerLabel.frame = CGRect(x: 8, y: 8, width: size.width - 16, height: size.height - 16)
+            placeholerLabel.sizeToFit()
+            addSubview(placeholerLabel)
+        }
+
+        if let txt = self.text, txt.isEmpty, let placeholder = self.placeholerLabel.text, !placeholder.isEmpty {
+            placeholerLabel.alpha = 1
+        }
+        super.draw(rect)
+    }
+}
+
 // MARK: - UIGestureRecognizer
 
 public extension UIGestureRecognizer {

@@ -402,3 +402,19 @@ public func synchronized(_ lock: AnyObject, closure: () -> ()) {
     closure()
     objc_sync_exit(lock)
 }
+
+/// 日志输出
+/// - Parameters:
+///   - message: 输出信息
+///   - file: 文件名
+///   - method: 方法名
+///   - line: 行数
+public func printLog<T>(_ message: T,
+                    file: String = #file,
+                  method: String = #function,
+                    line: Int = #line)
+{
+    #if DEBUG
+        print("\((file as NSString).lastPathComponent)[\(line)], \(method): \(message)")
+    #endif
+}
