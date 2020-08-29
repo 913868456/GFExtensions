@@ -132,3 +132,4 @@ xcuserdata
 /*.gcno
 
 # End of https://www.gitignore.io/api/git,xcode,macos,swift,carthage,cocoapods
+*.xcuserstate
